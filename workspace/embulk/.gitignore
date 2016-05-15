@@ -1,0 +1,5 @@
+.bundle
+embulk.jar
+
+jruby
+.ruby-version

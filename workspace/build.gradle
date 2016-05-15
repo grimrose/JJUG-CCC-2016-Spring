@@ -1,0 +1,105 @@
+buildscript {
+  apply from: 'gradle/buildscript.gradle', to: buildscript
+}
+
+subprojects {
+
+}
+
+apply from: 'gradle/front.gradle'
+apply from: 'gradle/server.gradle'
+
+/* run jruby command */
+import com.github.jrubygradle.JRubyExec
+
+project(":serverspec") {
+  apply plugin: "com.github.jruby-gradle.base"
+
+  dependencies {
+    jrubyExec 'rubygems:serverspec:2.+'
+    jrubyExec 'rubygems:rake:11.+'
+    jrubyExec 'rubygems:rspec:3.4.+'
+    jrubyExec 'rubygems:bundler:1.12.+'
+  }
+
+  task spec(type: JRubyExec) {
+    script 'rake'
+    scriptArgs 'Rakefile', 'spec'
+  }
+
+}
+
+/* import tasks from gist */
+apply from: 'https://gist.githubusercontent.com/grimrose/e4ffb9d4dfd50c6adba21f4541cfaefc/raw/2cf18eb571805a7ab9480e71208507d63f8351c4/external.gradle'
+
+/* executable jar task */
+import de.undercouch.gradle.tasks.download.Download
+
+project(":embulk") {
+  apply plugin: 'de.undercouch.download'
+
+  task downloadEmbulkJar(type: Download) {
+    src 'http://dl.embulk.org/embulk-latest.jar'
+    dest 'embulk.jar'
+  }
+
+  task embulkRun(type: JavaExec) {
+    main = "-jar"
+    args = [
+      'embulk.jar',
+      'run',
+      '-b',
+      './embulk_bundle',
+      'config.yml'
+    ]
+  }
+
+  task embulkBundle(type: JavaExec) {
+    main = "-jar"
+    args = [
+      'embulk.jar',
+      'bundle',
+      '-b',
+      './embulk_bundle'
+    ]
+  }
+
+}
+
+apply plugin: "com.chrisgahlert.gradle-dcompose-plugin"
+
+repositories {
+  mavenCentral()
+}
+
+dcompose {
+  api {
+    image = "jjug-ccc-2016-spring/server"
+    portBindings = ["8080:8080"]
+  }
+  appData {
+    image = "busybox"
+    // cannot use project.rootDir :(
+    def rootPath = file(".").toPath().toString()
+    binds = [ rootPath + "/html/" + ':/usr/share/nginx/html/']
+  }
+  app {
+    baseDir = file('./nginx')
+    portBindings = ["9000:80"]
+    volumesFrom = [appData]
+    links = [api.link()]
+  }
+}
+
+task copyToMountDirectory(type: Copy) {
+  from "./html"
+  into "/tmp/html"
+}
+
+copyToMountDirectory.dependsOn ':front:syncAssets'
+createAppContainer.dependsOn copyToMountDirectory
+createApiContainer.dependsOn ':server:dockerBuildImage'
+
+task appTest
+
+appTest.dependsOn ':front:npm_test', ':server:test'

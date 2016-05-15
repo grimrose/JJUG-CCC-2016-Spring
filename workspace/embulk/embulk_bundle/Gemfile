@@ -1,0 +1,32 @@
+source 'https://rubygems.org/'
+gem 'embulk', '~> 0.8.0'
+
+#
+# 1. Use following syntax to specify versions of plugins
+#    to install this bundle directory:
+#
+#gem 'embulk-output-mysql'                     # the latest version
+#gem 'embulk-input-baz', '= 0.2.0'             # specific version
+#gem 'embulk-input-xyz', '~> 0.3.0'            # latest major version
+#gem 'embulk-output-postgresql', '>= 0.1.0'    # newer than specific version
+#
+#gem 'embulk-output-awesome', git: 'https://github.com/you/embulk-output-awesome.git', branch: 'master'
+#
+
+gem 'embulk-input-http'
+
+#
+# 2. When you modify this file, run following command to
+#    install plugins:
+#
+#   $ cd this_directory
+#   $ embulk bundle
+#
+
+#
+# 3. Then you can use plugins with -b, --bundle BUNDLE_PATH command:
+#
+#   $ embulk guess -b path/to/this/directory  ...
+#   $ embulk run -b path/to/this/directory  ...
+#   $ embulk preview -b path/to/this/directory  ...
+#

@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+  app:
+    build: ./nginx
+    ports:
+      - "9000:80"
+    volumes:
+      - "./html:/usr/share/nginx/html"
+    links:
+      - api
+
+  api:
+    image: jjug-ccc-2016-spring/server
+    ports:
+      - "8080:8080"

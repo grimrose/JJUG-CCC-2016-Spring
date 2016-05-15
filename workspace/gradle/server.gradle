@@ -1,0 +1,14 @@
+/* build docker image */
+project(":server") {
+  apply plugin: "com.bmuschko.docker-java-application"
+
+  docker {
+    url = System.env.DOCKER_HOST.replaceAll('tcp', 'https')
+    certPath = file(System.env.DOCKER_CERT_PATH)
+    javaApplication {
+      baseImage = 'anapsix/alpine-java:8'
+      maintainer = '@grimrose "grwin7@gmail.com"'
+      port = 8080
+    }
+  }
+}

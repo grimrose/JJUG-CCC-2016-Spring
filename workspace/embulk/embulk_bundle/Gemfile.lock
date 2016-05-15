@@ -1,0 +1,22 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    embulk (0.8.9-java)
+      bundler (>= 1.10.6)
+      liquid (~> 3.0.6)
+      msgpack (~> 0.7.3)
+      rjack-icu (~> 4.54.1.1)
+    embulk-input-http (0.0.9)
+    liquid (3.0.6)
+    msgpack (0.7.6-java)
+    rjack-icu (4.54.1.1-java)
+
+PLATFORMS
+  java
+
+DEPENDENCIES
+  embulk (~> 0.8.0)
+  embulk-input-http
+
+BUNDLED WITH
+   1.10.6

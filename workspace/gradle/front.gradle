@@ -1,0 +1,11 @@
+/* front app */
+project(":front") {
+  apply plugin: "com.moowork.node"
+
+  task syncAssets(type: Sync) {
+    from './build/assets/'
+    into '../html/assets/'
+  }
+
+  syncAssets.dependsOn npm_run_build
+}
