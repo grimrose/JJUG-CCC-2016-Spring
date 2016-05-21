@@ -8,6 +8,10 @@
 
 *[#ccc_m61](https://twitter.com/search?f=tweets&q=%23ccc_m61&src=typd)*
 
+## スライド
+
+[十徳ナイフとしてのGradle](https://nbviewer.jupyter.org/format/slides/github/grimrose/JJUG-CCC-2016-Spring/blob/master/Gradle%20as%20Army%20Knife.ipynb#/)
+
 ## 必須環境
 
 * Docker
